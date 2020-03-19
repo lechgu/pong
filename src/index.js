@@ -25,32 +25,29 @@ class MainScene extends Phaser.Scene {
       this.opts.height,
       '#282a34'
     );
+    this.createSolidSprite('paddle', 15, 60, '#ffffff');
+    this.createSolidSprite('ball', 12, 12, '#ffffff');
   }
 
   create() {
     this.add.image(this.opts.width / 2, this.opts.height / 2, 'background');
-    this.add.bitmapText(
-      this.opts.width / 2,
-      this.opts.height / 2,
-      'font24',
-      'Hello,  Pong'
+    this.add.image(210, 100, 'paddle');
+    this.add.image(
+      this.opts.width - 210 + 7.5,
+      this.opts.height - 100 - 30 + 7.5,
+      'paddle'
     );
+    this.add.image(this.opts.width / 2, this.opts.height / 2, 'ball');
+    //  this.add.image(300, 300, 'paddle');
+    this.add.bitmapText(this.opts.width / 2, 100, 'font24', 'Hello,  Pong');
   }
   update() {}
 }
 
 window.onload = () => {
-  const WINDOW_WIDTH = 1280;
-  const WINDOW_HEIGHT = 720;
-  const VIRTUAL_WIDTH = 432;
-  const VIRTUAL_HEIGHT = 243;
   const opts = {
-    width: WINDOW_WIDTH,
-    height: WINDOW_HEIGHT,
-    virtWidth: VIRTUAL_WIDTH,
-    virtHeight: VIRTUAL_HEIGHT,
-    scaleX: WINDOW_WIDTH / VIRTUAL_WIDTH,
-    scaleY: WINDOW_HEIGHT / VIRTUAL_HEIGHT
+    width: 1280,
+    height: 720
   };
 
   const mainScene = new MainScene(opts);
