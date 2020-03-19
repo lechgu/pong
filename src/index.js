@@ -9,17 +9,22 @@ class MainScene extends Phaser.Scene {
     this.opts = opts;
   }
 
+  createSolidSprite(name, width, height, color) {
+    const texture = this.textures.createCanvas(name, width, height);
+    const ctx = texture.getContext();
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, width, height);
+    texture.refresh();
+  }
+
   preload() {
     this.load.bitmapFont('font24', font24_png, font24_fnt);
-    const texture = this.textures.createCanvas(
+    this.createSolidSprite(
       'background',
       this.opts.width,
-      this.opts.height
+      this.opts.height,
+      '#282a34'
     );
-    const ctx = texture.getContext();
-    ctx.fillStyle = '#282a34';
-    ctx.fillRect(0, 0, this.opts.width, this.opts.height);
-    texture.refresh();
   }
 
   create() {
@@ -31,7 +36,6 @@ class MainScene extends Phaser.Scene {
       'Hello,  Pong'
     );
   }
-
   update() {}
 }
 
