@@ -18,6 +18,8 @@ class Paddle {
 
   incrementY(dy) {
     this.y += dy;
+    this.y = Math.max(30, this.y);
+    this.y = Math.min(this.y, this.game.opts.height - 30);
   }
 
   update(dt) {
@@ -31,10 +33,19 @@ class Ball {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.dx = Phaser.Math.Between(0, 1) == 1 ? -0.1 : 0.1;
+    this.dy = Phaser.Math.FloatBetween(-0.05, 0.05);
   }
 
   create() {
     this.sprite = this.game.add.image(this.x, this.y, 'ball');
+  }
+
+  update(dt) {
+    this.x += this.dx * dt;
+    this.y += this.dy * dt;
+    this.sprite.x = this.x;
+    this.sprite.y = this.y;
   }
 }
 
@@ -107,6 +118,7 @@ class MainScene extends Phaser.Scene {
     const paddleSpeed = 0.3;
     this.paddleA.update(dt);
     this.paddleB.update(dt);
+    this.ball.update(dt);
     this.scoreA.update(dt);
     this.scoreB.update(dt);
 
