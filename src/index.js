@@ -1,87 +1,12 @@
 import './index.css';
 import Phaser from 'phaser';
+import { Paddle } from './Paddle';
+import { Ball } from './Ball';
+import { Score } from './Score';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
 import font96_fnt from './assets/font96.fnt';
-
-class Paddle {
-  constructor(game, x, y) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-  }
-
-  create() {
-    this.sprite = this.game.add.image(this.x, this.y, 'paddle');
-  }
-
-  incrementY(dy) {
-    this.y += dy;
-    this.y = Math.max(30, this.y);
-    this.y = Math.min(this.y, this.game.opts.height - 30);
-  }
-
-  update(dt) {
-    this.sprite.x = this.x;
-    this.sprite.y = this.y;
-  }
-}
-
-class Ball {
-  constructor(game, x, y) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-    this.dx = Phaser.Math.Between(0, 1) == 1 ? -0.1 : 0.1;
-    this.dy = Phaser.Math.FloatBetween(-0.05, 0.05);
-  }
-
-  create() {
-    this.sprite = this.game.add.image(this.x, this.y, 'ball');
-  }
-
-  update(dt) {
-    this.x += this.dx * dt;
-    this.y += this.dy * dt;
-    this.sprite.x = this.x;
-    this.sprite.y = this.y;
-  }
-}
-
-class Logo {
-  constructor(game, x, y) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-  }
-
-  create() {
-    this.text = this.game.add.bitmapText(
-      this.x,
-      this.y,
-      'font24',
-      'Hello Pong'
-    );
-  }
-}
-
-class Score {
-  constructor(game, x, y) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-    this.score = 0;
-  }
-
-  create() {
-    this.text = this.game.add.bitmapText(this.x, this.y, 'font96', '');
-  }
-
-  update(dt) {
-    this.text.text = `${this.score}`;
-  }
-}
 
 class MainScene extends Phaser.Scene {
   constructor(opts) {
@@ -93,20 +18,19 @@ class MainScene extends Phaser.Scene {
       this.opts.width - 100,
       this.opts.height - 100
     );
-    this.scoreA = new Score(this, 200, 200);
-    this.scoreB = new Score(this, this.opts.width - 200, 200);
+    this.scoreA = new Score(this, this.opts.width / 2 - 400, 200);
+    this.scoreB = new Score(this, this.opts.width / 2 + 400, 200);
     this.ball = new Ball(this, this.opts.width / 2, this.opts.height / 2);
-    this.logo = new Logo(this, this.opts.width / 2, 100);
   }
 
   create() {
     this.add.image(this.opts.width / 2, this.opts.height / 2, 'background');
+    this.add.bitmapText(this.x, this.y, 'font24', 'Hello Pong');
     this.paddleA.create();
     this.paddleB.create();
     this.ball.create();
     this.scoreA.create();
     this.scoreB.create();
-    this.logo.create();
     this.keyW = this.input.keyboard.addKey('w');
     this.keyS = this.input.keyboard.addKey('s');
     this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
