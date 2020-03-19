@@ -1,30 +1,29 @@
 import './index.css';
 import Phaser from 'phaser';
+import font24_png from './assets/font24.png';
+import font24_fnt from './assets/font24.fnt';
 
 class MainScene extends Phaser.Scene {
   constructor(opts) {
     super('MainScene');
     this.opts = opts;
-    console.log('constructor');
   }
 
   preload() {
-    const style = {
-      fontFamily: '"Arial"',
-      color: '#ffffff'
-    };
-    this.hello = this.add.text(-100, -100, 'Hello Pong!', style);
-    this.hello.visible = false;
+    this.load.bitmapFont('font24', font24_png, font24_fnt);
   }
 
   create() {
-    this.hello.visible = true;
+    const txt = this.add.bitmapText(
+      this.opts.width / 2,
+      this.opts.height / 2,
+      'font24',
+      'Hello Pong'
+    );
+    console.log(txt.width);
   }
 
-  update() {
-    this.hello.x = this.opts.width / 2;
-    this.hello.y = this.opts.height - 60;
-  }
+  update() {}
 }
 
 window.onload = () => {
@@ -39,6 +38,7 @@ window.onload = () => {
     width: opts.width,
     height: opts.height,
     backgroundColor: '#000000',
+    type: Phaser.CANVAS,
     scene: [mainScene]
   };
   const game = new Phaser.Game(config);
