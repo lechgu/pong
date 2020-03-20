@@ -25,7 +25,7 @@ class MainScene extends Phaser.Scene {
 
   create() {
     this.add.image(this.opts.width / 2, this.opts.height / 2, 'background');
-    this.add.bitmapText(this.x, this.y, 'font24', 'Hello Pong');
+    this.add.bitmapText(this.opts.width / 2, 40, 'font24', 'Hello Pong');
     this.paddleA.create();
     this.paddleB.create();
     this.ball.create();
