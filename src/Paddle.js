@@ -15,7 +15,9 @@ export class Paddle {
     this.y = Math.min(this.y, this.game.opts.height - 30);
   }
 
-  update(dt) {
+  update(dt) {}
+
+  render() {
     this.sprite.x = this.x;
     this.sprite.y = this.y;
   }

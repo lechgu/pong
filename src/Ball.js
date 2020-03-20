@@ -14,6 +14,9 @@ export class Ball {
   update(dt) {
     this.x += this.dx * dt;
     this.y += this.dy * dt;
+  }
+
+  render() {
     this.sprite.x = this.x;
     this.sprite.y = this.y;
   }

@@ -18,8 +18,8 @@ class MainScene extends Phaser.Scene {
       this.opts.width - 100,
       this.opts.height - 100
     );
-    this.scoreA = new Score(this, this.opts.width / 2 - 400, 200);
-    this.scoreB = new Score(this, this.opts.width / 2 + 400, 200);
+    this.scoreA = new Score(this, this.opts.width / 2 - 100, 100);
+    this.scoreB = new Score(this, this.opts.width / 2 + 100, 100);
     this.ball = new Ball(this, this.opts.width / 2, this.opts.height / 2);
   }
 
@@ -56,6 +56,10 @@ class MainScene extends Phaser.Scene {
     } else if (this.keyDown.isDown) {
       this.paddleB.incrementY(paddleSpeed * dt);
     }
+
+    this.paddleA.render();
+    this.paddleB.render();
+    this.ball.render();
   }
 
   preload() {
@@ -91,6 +95,7 @@ window.onload = () => {
   const config = {
     width: opts.width,
     height: opts.height,
+    type: Phaser.WEBGL,
     backgroundColor: '#000000',
     scene: [mainScene]
   };
