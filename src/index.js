@@ -57,7 +57,6 @@ class MainScene extends Phaser.Scene {
       this.paddleB.incrementY(paddleSpeed * dt);
     }
 
-    console.log(this.ball.collides(this.paddleA));
     if (this.ball.collides(this.paddleA)) {
       this.ball.dx = -this.ball.dx * 1.03;
       this.ball.x = this.paddleA.x + this.paddleA.width + 10;
@@ -81,7 +80,7 @@ class MainScene extends Phaser.Scene {
       this.ball.y = 0;
       this.ball.dy = -this.ball.dy;
     }
-    if (this.ball > this.opts.height - 6) {
+    if (this.ball.y > this.opts.height - 6) {
       this.ball.y = this.opts.height - 6;
       this.ball.dy = -this.ball.dy;
     }
