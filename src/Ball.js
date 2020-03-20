@@ -9,6 +9,11 @@ export class Ball {
     this.dy = Phaser.Math.FloatBetween(-0.05, 0.05);
   }
 
+  reset() {
+    this.dx = Phaser.Math.Between(0, 1) == 1 ? -0.1 : 0.1;
+    this.dy = Phaser.Math.FloatBetween(-0.05, 0.05);
+  }
+
   create() {
     this.sprite = this.game.add.image(this.x, this.y, 'ball');
   }
@@ -24,10 +29,14 @@ export class Ball {
   }
 
   collides(paddle) {
-    const x = Math.max(this.x, paddle.x);
-    const num1 = Math.min(this.x + this.width, paddle.x + paddle.width);
-    const y = Math.max(this.y, paddle.y);
-    const num2 = Math.min(this.y + this.height, paddle.y + paddle.height);
+    const ball_left = this.x - this.width / 2;
+    const ball_top = this.y - this.height / 2;
+    const paddle_left = paddle.x - paddle.width / 2;
+    const paddle_top = paddle.y - paddle.height / 2;
+    const x = Math.max(ball_left, paddle_left);
+    const num1 = Math.min(ball_left + this.width, paddle_left + paddle.width);
+    const y = Math.max(ball_top, paddle_top - paddle.height);
+    const num2 = Math.min(ball_top + this.height, paddle_top + paddle.height);
     return num1 >= x && num2 >= y;
   }
 }

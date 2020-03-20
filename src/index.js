@@ -20,18 +20,27 @@ class MainScene extends Phaser.Scene {
       this.opts.width - 100,
       this.opts.height - 100
     );
-    this.status = new Status(
-      this,
-      this.opts.width / 2,
-      40,
-      'Press [enter] to start'
-    );
+    this.status = new Status(this, this.opts.width / 2, 40, '[enter] to start');
     this.scoreA = new Score(this, this.opts.width / 2 - 100, 140);
     this.scoreB = new Score(this, this.opts.width / 2 + 100, 140);
     this.ball = new Ball(this, this.opts.width / 2, this.opts.height / 2);
   }
 
+  handleKey(e) {
+    if (e.code === 'Enter') {
+      if (this.state === 'started') {
+        this.ball.reset();
+        this.state = 'playing';
+        this.status.setStatus('[enter] to pause');
+      } else {
+        this.state = 'started';
+        this.status.setStatus('[enter] to resume');
+      }
+    }
+  }
+
   create() {
+    this.input.keyboard.on('keydown', this.handleKey, this);
     this.add.image(this.opts.width / 2, this.opts.height / 2, 'background');
     this.status.create();
     this.paddleA.create();
