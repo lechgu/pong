@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { Paddle } from './Paddle';
 import { Ball } from './Ball';
 import { Score } from './Score';
+import { Status } from './Status';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
@@ -12,20 +13,27 @@ class MainScene extends Phaser.Scene {
   constructor(opts) {
     super('MainScene');
     this.opts = opts;
+    this.state = 'started';
     this.paddleA = new Paddle(this, 100, 100);
     this.paddleB = new Paddle(
       this,
       this.opts.width - 100,
       this.opts.height - 100
     );
-    this.scoreA = new Score(this, this.opts.width / 2 - 100, 100);
-    this.scoreB = new Score(this, this.opts.width / 2 + 100, 100);
+    this.status = new Status(
+      this,
+      this.opts.width / 2,
+      40,
+      'Press [enter] to start'
+    );
+    this.scoreA = new Score(this, this.opts.width / 2 - 100, 140);
+    this.scoreB = new Score(this, this.opts.width / 2 + 100, 140);
     this.ball = new Ball(this, this.opts.width / 2, this.opts.height / 2);
   }
 
   create() {
     this.add.image(this.opts.width / 2, this.opts.height / 2, 'background');
-    this.add.bitmapText(this.opts.width / 2, 40, 'font24', 'Hello Pong');
+    this.status.create();
     this.paddleA.create();
     this.paddleB.create();
     this.ball.create();
@@ -39,55 +47,58 @@ class MainScene extends Phaser.Scene {
     );
   }
   update(tm, dt) {
-    const paddleSpeed = 0.3;
-    this.paddleA.update(dt);
-    this.paddleB.update(dt);
-    this.ball.update(dt);
-    this.scoreA.update(dt);
-    this.scoreB.update(dt);
+    this.status.render();
+    this.scoreA.render();
+    this.scoreB.render();
+    if (this.state == 'playing') {
+      const paddleSpeed = 0.3;
+      this.paddleA.update(dt);
+      this.paddleB.update(dt);
+      this.ball.update(dt);
 
-    if (this.keyW.isDown) {
-      this.paddleA.incrementY(-paddleSpeed * dt);
-    } else if (this.keyS.isDown) {
-      this.paddleA.incrementY(paddleSpeed * dt);
-    }
-    if (this.keyUp.isDown) {
-      this.paddleB.incrementY(-paddleSpeed * dt);
-    } else if (this.keyDown.isDown) {
-      this.paddleB.incrementY(paddleSpeed * dt);
-    }
-
-    if (this.ball.collides(this.paddleA)) {
-      this.ball.dx = -this.ball.dx * 1.03;
-      this.ball.x = this.paddleA.x + this.paddleA.width + 10;
-      if (this.ball.dy < 0) {
-        this.ball.dy = Phaser.Math.FloatBetween(-0.01, 0.001);
-      } else {
-        this.ball.dy = Phaser.Math.FloatBetween(0.001, 0.01);
+      if (this.keyW.isDown) {
+        this.paddleA.incrementY(-paddleSpeed * dt);
+      } else if (this.keyS.isDown) {
+        this.paddleA.incrementY(paddleSpeed * dt);
       }
-    }
-    if (this.ball.collides(this.paddleB)) {
-      this.ball.dx = -this.ball.dx * 1.03;
-      this.ball.x = this.paddleB.x - 20;
-      if (this.ball.dy < 0) {
-        this.ball.dy = Phaser.Math.FloatBetween(-0.1, 0.01);
-      } else {
-        this.ball.dy = Phaser.Math.FloatBetween(0.01, 0.1);
+      if (this.keyUp.isDown) {
+        this.paddleB.incrementY(-paddleSpeed * dt);
+      } else if (this.keyDown.isDown) {
+        this.paddleB.incrementY(paddleSpeed * dt);
       }
-    }
 
-    if (this.ball.y <= 2) {
-      this.ball.y = 2;
-      this.ball.dy = -this.ball.dy;
-    }
-    if (this.ball.y > this.opts.height - 2) {
-      this.ball.y = this.opts.height - 2;
-      this.ball.dy = -this.ball.dy;
-    }
+      if (this.ball.collides(this.paddleA)) {
+        this.ball.dx = -this.ball.dx * 1.03;
+        this.ball.x = this.paddleA.x + this.paddleA.width + 10;
+        if (this.ball.dy < 0) {
+          this.ball.dy = Phaser.Math.FloatBetween(-0.01, 0.001);
+        } else {
+          this.ball.dy = Phaser.Math.FloatBetween(0.001, 0.01);
+        }
+      }
+      if (this.ball.collides(this.paddleB)) {
+        this.ball.dx = -this.ball.dx * 1.03;
+        this.ball.x = this.paddleB.x - 12;
+        if (this.ball.dy < 0) {
+          this.ball.dy = Phaser.Math.FloatBetween(-0.1, 0.01);
+        } else {
+          this.ball.dy = Phaser.Math.FloatBetween(0.01, 0.1);
+        }
+      }
 
-    this.paddleA.render();
-    this.paddleB.render();
-    this.ball.render();
+      if (this.ball.y <= 2) {
+        this.ball.y = 2;
+        this.ball.dy = -this.ball.dy;
+      }
+      if (this.ball.y > this.opts.height - 2) {
+        this.ball.y = this.opts.height - 2;
+        this.ball.dy = -this.ball.dy;
+      }
+
+      this.paddleA.render();
+      this.paddleB.render();
+      this.ball.render();
+    }
   }
 
   preload() {

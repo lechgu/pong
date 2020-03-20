@@ -7,10 +7,17 @@ export class Score {
   }
 
   create() {
-    this.text = this.game.add.bitmapText(this.x, this.y, 'font96', '');
+    this.text = this.game.add.bitmapText(
+      this.x,
+      this.y,
+      'font96',
+      `${this.score}`
+    );
   }
 
-  update(dt) {
+  render() {
     this.text.text = `${this.score}`;
+    this.text.x = this.x - this.text.width / 2;
+    this.text.y = this.y - this.text.height / 2;
   }
 }
