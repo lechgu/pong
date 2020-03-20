@@ -3,6 +3,8 @@ export class Paddle {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.width = 16;
+    this.height = 50;
   }
 
   create() {
