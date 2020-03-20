@@ -24,18 +24,10 @@ export class Ball {
   }
 
   collides(paddle) {
-    if (this.x > paddle.x + paddle.width) {
-      return false;
-    }
-    if (paddle.x > this.x + this.width) {
-      return false;
-    }
-    if (this.y > paddle.y + paddle.height) {
-      return false;
-    }
-    if (paddle.y > this.y + this.height) {
-      return false;
-    }
-    return true;
+    const x = Math.max(this.x, paddle.x);
+    const num1 = Math.min(this.x + this.width, paddle.x + paddle.width);
+    const y = Math.max(this.y, paddle.y);
+    const num2 = Math.min(this.y + this.height, paddle.y + paddle.height);
+    return num1 >= x && num2 >= y;
   }
 }

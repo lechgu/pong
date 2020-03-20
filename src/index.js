@@ -76,12 +76,12 @@ class MainScene extends Phaser.Scene {
       }
     }
 
-    if (this.ball.y <= 0) {
-      this.ball.y = 0;
+    if (this.ball.y <= 2) {
+      this.ball.y = 2;
       this.ball.dy = -this.ball.dy;
     }
-    if (this.ball.y > this.opts.height - 6) {
-      this.ball.y = this.opts.height - 6;
+    if (this.ball.y > this.opts.height - 2) {
+      this.ball.y = this.opts.height - 2;
       this.ball.dy = -this.ball.dy;
     }
 
