@@ -59,8 +59,8 @@ class MainScene extends Phaser.Scene {
 
     console.log(this.ball.collides(this.paddleA));
     if (this.ball.collides(this.paddleA)) {
-      this.ball.dx - this.ball.dx * 1.03;
-      this.ball.x = this.paddleA.x + 15;
+      this.ball.dx = -this.ball.dx * 1.03;
+      this.ball.x = this.paddleA.x + this.paddleA.width + 10;
       if (this.ball.dy < 0) {
         this.ball.dy = Phaser.Math.FloatBetween(-0.01, 0.001);
       } else {
@@ -68,12 +68,12 @@ class MainScene extends Phaser.Scene {
       }
     }
     if (this.ball.collides(this.paddleB)) {
-      this.ball.dx - this.ball.dx * 1.03;
-      this.ball.x = this.paddleB.x - 10;
+      this.ball.dx = -this.ball.dx * 1.03;
+      this.ball.x = this.paddleB.x - 20;
       if (this.ball.dy < 0) {
-        this.ball.dy = Phaser.Math.FloatBetween(-0.01, 0.001);
+        this.ball.dy = Phaser.Math.FloatBetween(-0.1, 0.01);
       } else {
-        this.ball.dy = Phaser.Math.FloatBetween(0.001, 0.01);
+        this.ball.dy = Phaser.Math.FloatBetween(0.01, 0.1);
       }
     }
 
