@@ -1,5 +1,5 @@
 import './index.css';
-import { Ball } from './Objects';
+import { Ball, Paddle } from './Objects';
 import Phaser from 'phaser';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
@@ -11,15 +11,21 @@ class MainScene extends Phaser.Scene {
     super('MainScene');
     this.opts = opts;
     this.ball = new Ball(this, 100, 100);
+    this.paddle1 = new Paddle(this, 200, 200);
+    this.paddle2 = new Paddle(this, 400, 400);
   }
 
   create() {
     const img = this.add.image(0, 0, 'background').setOrigin(0, 0);
     this.ball.create();
+    this.paddle1.create();
+    this.paddle2.create();
   }
 
   update() {
     this.ball.render();
+    this.paddle1.render();
+    this.paddle2.render();
   }
 
   preload() {

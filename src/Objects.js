@@ -8,7 +8,12 @@ export class Paddle {
   }
 
   create() {
-    this.sprite = this.game.add.image(0, 0, 'paddle');
+    this.sprite = this.game.add.image(-1000, -1000, 'paddle').setOrigin(0, 0);
+  }
+
+  render() {
+    this.sprite.x = this.x;
+    this.sprite.y = this.y;
   }
 }
 
