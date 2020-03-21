@@ -24,12 +24,19 @@ class MainScene extends Phaser.Scene {
     this.scoreA = new Score(this, this.opts.width / 2 - 100, 140);
     this.scoreB = new Score(this, this.opts.width / 2 + 100, 140);
     this.ball = new Ball(this, this.opts.width / 2, this.opts.height / 2);
+    this.victory = 2;
+    this.serving = 1;
+    this.needsResetScore = true;
   }
 
   handleKey(e) {
     if (e.code === 'Enter') {
       if (this.state === 'started') {
-        this.ball.reset();
+        if (this.needsResetScore) {
+          this.scoreA.score = 0;
+          this.scoreB.score = 0;
+          this.needsResetScore = false;
+        }
         this.state = 'playing';
         this.status.setStatus('[enter] to pause');
       } else {
@@ -95,13 +102,40 @@ class MainScene extends Phaser.Scene {
         }
       }
 
-      if (this.ball.y <= 2) {
-        this.ball.y = 2;
+      if (this.ball.y < 3) {
+        this.ball.y = 3;
         this.ball.dy = -this.ball.dy;
       }
-      if (this.ball.y > this.opts.height - 2) {
-        this.ball.y = this.opts.height - 2;
-        this.ball.dy = -this.ball.dy;
+      if (this.ball.y > this.opts.height - 3) {
+        this.ball.y = this.opts.height - 3;
+        this.ball.dy = this.ball.dy;
+      }
+
+      if (this.ball.x < 3) {
+        this.scoreB.score += 1;
+        this.serving = 1;
+        this.ball.reset();
+        this.ball.adjust(this.serving);
+        this.state = 'started';
+        if (this.scoreB.score == this.victory) {
+          this.needsResetScore = true;
+          this.status.staus = 'Player 2 won, [enter to start again';
+        } else {
+          this.status.status = '[enter] to continue';
+        }
+      }
+      if (this.ball.x > this.opts.width - 3) {
+        this.scoreA.score += 1;
+        this.serving = 2;
+        this.ball.reset();
+        this.ball.adjust(this.serving);
+        this.state = 'started';
+        if (this.scoreA.score == this.victory) {
+          this.needsResetScore = true;
+          this.status.status = 'Player 1 won, [entor] to start again';
+        } else {
+          this.status.status = '[enter] to continue';
+        }
       }
 
       this.paddleA.render();
