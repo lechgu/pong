@@ -13,11 +13,12 @@ class MainScene extends Phaser.Scene {
     this.status = new Status(this, 0, 20);
     this.score0 = new Score(this, this.opts.w / 2 - 60, 100);
     this.score1 = new Score(this, this.opts.w / 2 + 60, 100);
-    this.ball = new Ball(this, 100, 100);
+    this.ball = new Ball(this, -100, -100);
     this.paddle0 = new Paddle(this, 50, 200);
     this.paddle1 = new Paddle(this, this.opts.w - 50 - this.paddle0.w, 200);
     this.state = {
-      name: ''
+      name: '',
+      serving: 0
     };
   }
 
@@ -33,10 +34,18 @@ class MainScene extends Phaser.Scene {
     this.keyS = this.input.keyboard.addKey('s');
     this.cursors = this.input.keyboard.createCursorKeys();
     this.enterState('idle');
+    this.input.keyboard.on('keydown', this.handleKey, this);
+    this.ball.onScored = n => {
+      const score = n == 0 ? this.score0 : this.score1;
+      score.score += 1;
+    };
   }
 
   update(tm, dt) {
-    this.ball.update(dt);
+    if (this.state.name === 'playing') {
+      this.ball.update(dt);
+    }
+
     this.hadleCursors(dt);
     this.status.render();
     this.score0.render();
@@ -62,9 +71,23 @@ class MainScene extends Phaser.Scene {
 
   enterState(newState) {
     const oldState = this.state.name;
-    if (newState != oldState) {
+    if (newState !== oldState) {
       this.state.name = newState;
-      this.status.status = newState;
+      if (newState == 'idle') {
+        this.ball.reset(this.serving);
+        this.status.status = '[Enter] to begin play';
+      }
+      if (newState == 'playing') {
+        thiss.status.status = '[Enter] to pause';
+      }
+    }
+  }
+
+  handleKey(e) {
+    if (e.code === 'Enter') {
+      if (this.state.name == 'idle') {
+        this.enterState('playing');
+      }
     }
   }
 

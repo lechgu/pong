@@ -33,6 +33,14 @@ export class Ball {
     this.h = 12;
     this.dx = this.opts.ballSpeed;
     this.dy = this.opts.ballSpeed;
+    this.onScored = n => {};
+  }
+
+  reset(n) {
+    this.x = (this.opts.w - this.w) / 2;
+    this.y = (this.opts.h - this.h) / 2;
+    this.dx = this.opts.ballSpeed * (n == 0) ? 1 : -1;
+    this.dy = this.opts.ballSpeed;
   }
 
   create() {
@@ -55,10 +63,12 @@ export class Ball {
     if (x <= 0) {
       x = 0;
       this.dx = -this.dx;
+      this.onScored(1);
     }
     if (x + this.w > this.opts.w) {
       x = this.opts.w - this.w;
       this.dx = -this.dx;
+      this.onScored(0);
     }
     if (y <= 0) {
       y = 0;
