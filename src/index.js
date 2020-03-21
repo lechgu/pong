@@ -1,5 +1,5 @@
 import './index.css';
-import { Ball, Paddle } from './Objects';
+import { Ball, Paddle, Status, Score } from './Objects';
 import Phaser, { Tilemaps } from 'phaser';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
@@ -10,24 +10,37 @@ class MainScene extends Phaser.Scene {
   constructor(opts) {
     super('MainScene');
     this.opts = opts;
+    this.status = new Status(this, 0, 20);
+    this.score0 = new Score(this, this.opts.w / 2 - 60, 100);
+    this.score1 = new Score(this, this.opts.w / 2 + 60, 100);
     this.ball = new Ball(this, 100, 100);
     this.paddle0 = new Paddle(this, 50, 200);
     this.paddle1 = new Paddle(this, this.opts.w - 50 - this.paddle0.w, 200);
+    this.state = {
+      name: ''
+    };
   }
 
   create() {
     const img = this.add.image(0, 0, 'background').setOrigin(0, 0);
+    this.status.create();
+    this.score0.create();
+    this.score1.create();
     this.ball.create();
     this.paddle0.create();
     this.paddle1.create();
     this.keyW = this.input.keyboard.addKey('w');
     this.keyS = this.input.keyboard.addKey('s');
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.enterState('idle');
   }
 
   update(tm, dt) {
     this.ball.update(dt);
     this.hadleCursors(dt);
+    this.status.render();
+    this.score0.render();
+    this.score1.render();
     this.ball.render();
     this.paddle0.render();
     this.paddle1.render();
@@ -45,6 +58,14 @@ class MainScene extends Phaser.Scene {
     );
     this.createSolidSprite('paddle', 15, 60, '#ffffff');
     this.createSolidSprite('ball', 12, 12, '#ffffff');
+  }
+
+  enterState(newState) {
+    const oldState = this.state.name;
+    if (newState != oldState) {
+      this.state.name = newState;
+      this.status.status = newState;
+    }
   }
 
   createSolidSprite(name, width, height, color) {

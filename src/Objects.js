@@ -91,11 +91,18 @@ export class Score {
       .bitmapText(this.x, this.y, 'font96', `${this.score}`)
       .setOrigin(0, 0);
   }
+
+  render() {
+    this.sprite.text = `${this.score}`;
+    this.sprite.x = this.x - this.sprite.width / 2;
+    this.sprite.y = this.y - this.sprite.height / 2;
+  }
 }
 
 export class Status {
   constructor(game, x, y) {
     this.game = game;
+    this.opts = game.opts;
     this.x = x;
     this.y = y;
     this.status = '';
@@ -104,5 +111,10 @@ export class Status {
     this.sprite = this.game.add
       .bitmapText(this.x, this.y, 'font24', this.status)
       .setOrigin(0, 0);
+  }
+
+  render() {
+    this.sprite.text = this.status;
+    this.sprite.x = (this.opts.w - this.sprite.width) / 2;
   }
 }
