@@ -1,5 +1,9 @@
 import './index.css';
 import Phaser from 'phaser';
+import Ball from './Objects';
+import Paddle from './Objects';
+import Score from './Objects';
+import Status from './Objects';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
@@ -39,9 +43,17 @@ class MainScene extends Phaser.Scene {
 }
 
 window.onload = () => {
+  const resizeGame = () => {
+    const canvas = document.querySelector('canvas');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+  };
+
   const opts = {
-    width: 1280,
-    height: 720
+    width: 800,
+    height: 600
   };
 
   const mainScene = new MainScene(opts);
@@ -53,4 +65,7 @@ window.onload = () => {
     scene: [mainScene]
   };
   const game = new Phaser.Game(config);
+  window.focus();
+  resizeGame();
+  window.addEventListener('resize', resizeGame);
 };
