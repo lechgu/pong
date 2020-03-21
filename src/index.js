@@ -1,4 +1,5 @@
 import './index.css';
+import { Ball } from './Objects';
 import Phaser from 'phaser';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
@@ -9,11 +10,16 @@ class MainScene extends Phaser.Scene {
   constructor(opts) {
     super('MainScene');
     this.opts = opts;
+    this.ball = new Ball(this, 100, 100);
   }
 
   create() {
     const img = this.add.image(0, 0, 'background').setOrigin(0, 0);
-    //this.ball.create();
+    this.ball.create();
+  }
+
+  update() {
+    this.ball.render();
   }
 
   preload() {
@@ -23,8 +29,8 @@ class MainScene extends Phaser.Scene {
       'background',
       this.opts.width,
       this.opts.height,
-      '#ff0000'
-      //'#282a34'
+      //'#ff0000'
+      '#282a34'
     );
     this.createSolidSprite('paddle', 15, 60, '#ffffff');
     this.createSolidSprite('ball', 12, 12, '#ffffff');
