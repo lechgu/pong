@@ -22,7 +22,7 @@ export class Ball {
   }
 
   create() {
-    this.sprite = this.game.add.image(0, 0, 'ball');
+    this.sprite = this.game.add.image(0, 0, 'ball').setOrigin(-1000, -1000);
   }
 }
 
@@ -35,12 +35,9 @@ export class Score {
   }
 
   create() {
-    this.sprite = this.game.add.bitmapText(
-      this.x,
-      this.y,
-      'font96',
-      `${this.score}`
-    );
+    this.sprite = this.game.add
+      .bitmapText(this.x, this.y, 'font96', `${this.score}`)
+      .setOrigin(0, 0);
   }
 }
 
@@ -52,11 +49,8 @@ export class Status {
     this.status = '';
   }
   create() {
-    this.sprite = this.game.add.bitmapText(
-      this.x,
-      this.y,
-      'font24',
-      this.status
-    );
+    this.sprite = this.game.add
+      .bitmapText(this.x, this.y, 'font24', this.status)
+      .setOrigin(0, 0);
   }
 }
