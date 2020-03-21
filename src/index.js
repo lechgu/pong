@@ -83,7 +83,7 @@ window.onload = () => {
   const opts = {
     w: 800,
     h: 600,
-    paddleSpeed: 1,
+    paddleSpeed: 0.3,
     ballSpeed: 0.1
   };
 

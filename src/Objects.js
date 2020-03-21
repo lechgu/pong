@@ -1,3 +1,5 @@
+import { collides } from './utils';
+
 export class Paddle {
   constructor(game, x, y) {
     this.game = game;
@@ -38,6 +40,16 @@ export class Ball {
   }
 
   update(dt) {
+    if (collides(this, this.game.paddle0)) {
+      this.x = this.game.paddle0.x + this.game.paddle0.w;
+      this.dx = -this.dx;
+      return;
+    }
+    if (collides(this, this.game.paddle1)) {
+      this.x = this.game.paddle1.x - this.w;
+      this.dx = -this.dx;
+      return;
+    }
     let x = this.x + this.dx * dt;
     let y = this.y + this.dy * dt;
     if (x <= 0) {
