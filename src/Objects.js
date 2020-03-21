@@ -15,6 +15,10 @@ export class Paddle {
     this.sprite.x = this.x;
     this.sprite.y = this.y;
   }
+
+  updateY(dy) {
+    this.y = Phaser.Math.Clamp(this.y + dy, 0, this.game.opts.h - this.h);
+  }
 }
 
 export class Ball {

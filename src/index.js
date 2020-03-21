@@ -1,10 +1,12 @@
 import './index.css';
 import { Ball, Paddle } from './Objects';
-import Phaser from 'phaser';
+import Phaser, { Tilemaps } from 'phaser';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
 import font96_fnt from './assets/font96.fnt';
+
+const PADDLE_SPEED = 0.3;
 
 class MainScene extends Phaser.Scene {
   constructor(opts) {
@@ -20,9 +22,13 @@ class MainScene extends Phaser.Scene {
     this.ball.create();
     this.paddle1.create();
     this.paddle2.create();
+    this.keyW = this.input.keyboard.addKey('w');
+    this.keyS = this.input.keyboard.addKey('s');
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
-  update() {
+  update(tm, dt) {
+    this.hadleCursors(dt);
     this.ball.render();
     this.paddle1.render();
     this.paddle2.render();
@@ -49,6 +55,21 @@ class MainScene extends Phaser.Scene {
     ctx.fillRect(0, 0, width, height);
     texture.refresh();
   }
+
+  hadleCursors(dt) {
+    if (this.cursors.down.isDown) {
+      this.paddle2.updateY(PADDLE_SPEED * dt);
+    }
+    if (this.cursors.up.isDown) {
+      this.paddle2.updateY(-PADDLE_SPEED * dt);
+    }
+    if (this.keyS.isDown) {
+      this.paddle1.updateY(PADDLE_SPEED * dt);
+    }
+    if (this.keyW.isDown) {
+      this.paddle1.updateY(-PADDLE_SPEED * dt);
+    }
+  }
 }
 
 window.onload = () => {
@@ -61,15 +82,15 @@ window.onload = () => {
   };
 
   const opts = {
-    width: 800,
-    height: 600
+    w: 800,
+    h: 600
   };
 
   const mainScene = new MainScene(opts);
 
   const config = {
-    width: opts.width,
-    height: opts.height,
+    width: opts.w,
+    height: opts.h,
     backgroundColor: '#000000',
     scene: [mainScene]
   };
