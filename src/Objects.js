@@ -38,8 +38,26 @@ export class Ball {
   }
 
   update(dt) {
-    this.x += this.dx * dt;
-    this.y += this.dy * dt;
+    let x = this.x + this.dx * dt;
+    let y = this.y + this.dy * dt;
+    if (x <= 0) {
+      x = 0;
+      this.dx = -this.dx;
+    }
+    if (x + this.w > this.opts.w) {
+      x = this.opts.w - this.w;
+      this.dx = -this.dx;
+    }
+    if (y <= 0) {
+      y = 0;
+      this.dy = -this.dy;
+    }
+    if (y + this.h > this.opts.h) {
+      y = this.opts.h - this.h;
+      this.dy = -this.dy;
+    }
+    this.x = x;
+    this.y = y;
   }
 
   render() {
