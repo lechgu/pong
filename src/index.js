@@ -11,15 +11,15 @@ class MainScene extends Phaser.Scene {
     super('MainScene');
     this.opts = opts;
     this.ball = new Ball(this, 100, 100);
-    this.paddle1 = new Paddle(this, 50, 200);
-    this.paddle2 = new Paddle(this, this.opts.w - 50 - this.paddle1.w, 200);
+    this.paddle0 = new Paddle(this, 50, 200);
+    this.paddle1 = new Paddle(this, this.opts.w - 50 - this.paddle0.w, 200);
   }
 
   create() {
     const img = this.add.image(0, 0, 'background').setOrigin(0, 0);
     this.ball.create();
+    this.paddle0.create();
     this.paddle1.create();
-    this.paddle2.create();
     this.keyW = this.input.keyboard.addKey('w');
     this.keyS = this.input.keyboard.addKey('s');
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -29,8 +29,8 @@ class MainScene extends Phaser.Scene {
     this.ball.update(dt);
     this.hadleCursors(dt);
     this.ball.render();
+    this.paddle0.render();
     this.paddle1.render();
-    this.paddle2.render();
   }
 
   preload() {
@@ -57,16 +57,16 @@ class MainScene extends Phaser.Scene {
 
   hadleCursors(dt) {
     if (this.cursors.down.isDown) {
-      this.paddle2.updateY(this.opts.paddleSpeed * dt);
-    }
-    if (this.cursors.up.isDown) {
-      this.paddle2.updateY(-this.opts.paddleSpeed * dt);
-    }
-    if (this.keyS.isDown) {
       this.paddle1.updateY(this.opts.paddleSpeed * dt);
     }
-    if (this.keyW.isDown) {
+    if (this.cursors.up.isDown) {
       this.paddle1.updateY(-this.opts.paddleSpeed * dt);
+    }
+    if (this.keyS.isDown) {
+      this.paddle0.updateY(this.opts.paddleSpeed * dt);
+    }
+    if (this.keyW.isDown) {
+      this.paddle0.updateY(-this.opts.paddleSpeed * dt);
     }
   }
 }
