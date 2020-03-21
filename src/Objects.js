@@ -24,14 +24,22 @@ export class Paddle {
 export class Ball {
   constructor(game, x, y) {
     this.game = game;
+    this.opts = game.opts;
     this.x = x;
     this.y = y;
     this.w = 12;
     this.h = 12;
+    this.dx = this.opts.ballSpeed;
+    this.dy = this.opts.ballSpeed;
   }
 
   create() {
     this.sprite = this.game.add.image(-1000, -1000, 'ball').setOrigin(0, 0);
+  }
+
+  update(dt) {
+    this.x += this.dx * dt;
+    this.y += this.dy * dt;
   }
 
   render() {

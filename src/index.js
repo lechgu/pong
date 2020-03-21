@@ -6,15 +6,13 @@ import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
 import font96_fnt from './assets/font96.fnt';
 
-const PADDLE_SPEED = 0.3;
-
 class MainScene extends Phaser.Scene {
   constructor(opts) {
     super('MainScene');
     this.opts = opts;
     this.ball = new Ball(this, 100, 100);
-    this.paddle1 = new Paddle(this, 200, 200);
-    this.paddle2 = new Paddle(this, 400, 400);
+    this.paddle1 = new Paddle(this, 50, 200);
+    this.paddle2 = new Paddle(this, this.opts.w - 50 - this.paddle1.w, 200);
   }
 
   create() {
@@ -28,6 +26,7 @@ class MainScene extends Phaser.Scene {
   }
 
   update(tm, dt) {
+    this.ball.update(dt);
     this.hadleCursors(dt);
     this.ball.render();
     this.paddle1.render();
@@ -58,16 +57,16 @@ class MainScene extends Phaser.Scene {
 
   hadleCursors(dt) {
     if (this.cursors.down.isDown) {
-      this.paddle2.updateY(PADDLE_SPEED * dt);
+      this.paddle2.updateY(this.opts.paddleSpeed * dt);
     }
     if (this.cursors.up.isDown) {
-      this.paddle2.updateY(-PADDLE_SPEED * dt);
+      this.paddle2.updateY(-this.opts.paddleSpeed * dt);
     }
     if (this.keyS.isDown) {
-      this.paddle1.updateY(PADDLE_SPEED * dt);
+      this.paddle1.updateY(this.opts.paddleSpeed * dt);
     }
     if (this.keyW.isDown) {
-      this.paddle1.updateY(-PADDLE_SPEED * dt);
+      this.paddle1.updateY(-this.opts.paddleSpeed * dt);
     }
   }
 }
@@ -83,7 +82,9 @@ window.onload = () => {
 
   const opts = {
     w: 800,
-    h: 600
+    h: 600,
+    paddleSpeed: 1,
+    ballSpeed: 0.1
   };
 
   const mainScene = new MainScene(opts);
