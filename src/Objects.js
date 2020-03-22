@@ -39,7 +39,8 @@ export class Ball {
   reset(n) {
     this.x = (this.opts.w - this.w) / 2;
     this.y = (this.opts.h - this.h) / 2;
-    this.dx = this.opts.ballSpeed * (n == 0) ? 1 : -1;
+
+    this.dx = n == 0 ? this.opts.ballSpeed : -this.opts.ballSpeed;
     this.dy = this.opts.ballSpeed;
   }
 
