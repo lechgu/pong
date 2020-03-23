@@ -35,10 +35,7 @@ class MainScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.enterState('idle');
     this.input.keyboard.on('keydown', this.handleKey, this);
-    this.ball.onScored = n => {
-      const score = n == 0 ? this.score0 : this.score1;
-      score.score += 1;
-    };
+    this.ball.onScored = n => {};
   }
 
   update(tm, dt) {
@@ -69,16 +66,14 @@ class MainScene extends Phaser.Scene {
     this.createSolidSprite('ball', 12, 12, '#ffffff');
   }
 
-  enterState(newState) {
+  enterState(newState, aux) {
     const oldState = this.state.state;
     if (newState == 'idle') {
+      this.ball.reset(this.serving);
       this.status.status = '[enter] to begin';
     } else if (newState == 'paused') {
       this.status.status = '[enter] to resume';
     } else if (newState == 'playing') {
-      if (oldState == 'idle') {
-        this.ball.reset(this.serving);
-      }
       this.status.status = '[enter] to pause';
     }
     this.state.name = newState;
