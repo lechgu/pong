@@ -70,22 +70,27 @@ class MainScene extends Phaser.Scene {
   }
 
   enterState(newState) {
-    const oldState = this.state.name;
-    if (newState !== oldState) {
-      this.state.name = newState;
-      if (newState == 'idle') {
+    const oldState = this.state.state;
+    if (newState == 'idle') {
+      this.status.status = '[enter] to begin';
+    } else if (newState == 'paused') {
+      this.status.status = '[enter] to resume';
+    } else if (newState == 'playing') {
+      if (oldState == 'idle') {
         this.ball.reset(this.serving);
-        this.status.status = '[Enter] to begin play';
       }
-      if (newState == 'playing') {
-        thiss.status.status = '[Enter] to pause';
-      }
+      this.status.status = '[enter] to pause';
     }
+    this.state.name = newState;
   }
 
   handleKey(e) {
     if (e.code === 'Enter') {
       if (this.state.name == 'idle') {
+        this.enterState('playing');
+      } else if (this.state.name == 'playing') {
+        this.enterState('paused');
+      } else if (this.state.name == 'paused') {
         this.enterState('playing');
       }
     }
