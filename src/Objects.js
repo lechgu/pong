@@ -41,7 +41,10 @@ export class Ball {
     this.y = (this.opts.h - this.h) / 2;
 
     this.dx = n == 0 ? this.opts.ballSpeed : -this.opts.ballSpeed;
-    this.dy = this.opts.ballSpeed;
+    this.dy = Phaser.Math.FloatBetween(
+      this.opts.ballSpeed * 0.1,
+      this.opts.ballSpeed * 1.9
+    );
   }
 
   create() {

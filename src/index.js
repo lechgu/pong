@@ -38,9 +38,12 @@ class MainScene extends Phaser.Scene {
     this.ball.onScored = n => {
       const score = n == 0 ? this.score0 : this.score1;
       score.score += 1;
-
-      this.ball.reset(1 - n);
-      this.enterState('paused');
+      if (score.score == this.opts.wins) {
+        this.enterState('win', n);
+      } else {
+        this.ball.reset(1 - n);
+        this.enterState('paused');
+      }
     };
   }
 
@@ -73,16 +76,24 @@ class MainScene extends Phaser.Scene {
   }
 
   enterState(newState, aux) {
-    const oldState = this.state.state;
+    const oldState = this.state.name;
+    this.state.name = newState;
     if (newState == 'idle') {
-      this.ball.reset(this.serving);
-      this.status.status = '[enter] to begin';
+      this.ball.reset(this.state.serving);
+      if (oldState !== 'win') {
+        this.status.status = '[enter] to begin';
+      }
     } else if (newState == 'paused') {
       this.status.status = '[enter] to resume';
     } else if (newState == 'playing') {
       this.status.status = '[enter] to pause';
+      this.score0.score = 0;
+      this.score1.score = 0;
+    } else if (newState == 'win') {
+      this.status.status = `Player ${1 + aux} won, [enter] to play again`;
+      this.state.serving = 1 - aux;
+      this.enterState('idle');
     }
-    this.state.name = newState;
   }
 
   handleKey(e) {
@@ -135,7 +146,8 @@ window.onload = () => {
     h: 600,
     paddleSpeed: 0.3,
     ballSpeed: 0.1,
-    paddleSpeedup: 1.03
+    paddleSpeedup: 1.03,
+    wins: 5
   };
 
   const mainScene = new MainScene(opts);
