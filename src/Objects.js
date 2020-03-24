@@ -51,12 +51,12 @@ export class Ball {
   update(dt) {
     if (collides(this, this.game.paddle0)) {
       this.x = this.game.paddle0.x + this.game.paddle0.w;
-      this.dx = -this.dx;
+      this.dx = -this.dx * this.opts.paddleSpeedup;
       return;
     }
     if (collides(this, this.game.paddle1)) {
       this.x = this.game.paddle1.x - this.w;
-      this.dx = -this.dx;
+      this.dx = -this.dx * this.opts.paddleSpeedup;
       return;
     }
     let x = this.x + this.dx * dt;

@@ -38,6 +38,7 @@ class MainScene extends Phaser.Scene {
     this.ball.onScored = n => {
       const score = n == 0 ? this.score0 : this.score1;
       score.score += 1;
+
       this.ball.reset(1 - n);
       this.enterState('paused');
     };
@@ -133,7 +134,8 @@ window.onload = () => {
     w: 800,
     h: 600,
     paddleSpeed: 0.3,
-    ballSpeed: 0.1
+    ballSpeed: 0.1,
+    paddleSpeedup: 1.03
   };
 
   const mainScene = new MainScene(opts);
