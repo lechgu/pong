@@ -62,14 +62,12 @@ export class Ball {
     let x = this.x + this.dx * dt;
     let y = this.y + this.dy * dt;
     if (x <= 0) {
-      x = 0;
-      this.dx = -this.dx;
       this.onScored(1);
+      return;
     }
     if (x + this.w > this.opts.w) {
-      x = this.opts.w - this.w;
-      this.dx = -this.dx;
       this.onScored(0);
+      return;
     }
     if (y <= 0) {
       y = 0;

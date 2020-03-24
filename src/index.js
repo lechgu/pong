@@ -35,7 +35,12 @@ class MainScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.enterState('idle');
     this.input.keyboard.on('keydown', this.handleKey, this);
-    this.ball.onScored = n => {};
+    this.ball.onScored = n => {
+      const score = n == 0 ? this.score0 : this.score1;
+      score.score += 1;
+      this.ball.reset(1 - n);
+      this.enterState('paused');
+    };
   }
 
   update(tm, dt) {
