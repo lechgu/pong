@@ -34,6 +34,8 @@ export class Ball {
     this.dx = this.opts.ballSpeed;
     this.dy = this.opts.ballSpeed;
     this.onScored = n => {};
+    this.onWallHit = () => {};
+    this.onPaddleHit = () => {};
   }
 
   reset(n) {
@@ -55,11 +57,13 @@ export class Ball {
     if (collides(this, this.game.paddle0)) {
       this.x = this.game.paddle0.x + this.game.paddle0.w;
       this.dx = -this.dx * this.opts.paddleSpeedup;
+      this.onPaddleHit();
       return;
     }
     if (collides(this, this.game.paddle1)) {
       this.x = this.game.paddle1.x - this.w;
       this.dx = -this.dx * this.opts.paddleSpeedup;
+      this.onPaddleHit();
       return;
     }
     let x = this.x + this.dx * dt;
@@ -75,10 +79,12 @@ export class Ball {
     if (y <= 0) {
       y = 0;
       this.dy = -this.dy;
+      this.onWallHit();
     }
     if (y + this.h > this.opts.h) {
       y = this.opts.h - this.h;
       this.dy = -this.dy;
+      this.onWallHit();
     }
     this.x = x;
     this.y = y;

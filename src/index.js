@@ -1,10 +1,13 @@
 import './index.css';
 import { Ball, Paddle, Status, Score } from './Objects';
-import Phaser, { Tilemaps } from 'phaser';
+import Phaser from 'phaser';
 import font24_png from './assets/font24.png';
 import font24_fnt from './assets/font24.fnt';
 import font96_png from './assets/font96.png';
 import font96_fnt from './assets/font96.fnt';
+import paddle_hit_wav from './assets/paddle_hit.wav';
+import wall_hit_wav from './assets/wall_hit.wav';
+import score_wav from './assets/score.wav';
 
 class MainScene extends Phaser.Scene {
   constructor(opts) {
@@ -23,6 +26,9 @@ class MainScene extends Phaser.Scene {
   }
 
   create() {
+    this.paddleHitSound = this.sound.add('paddle_hit');
+    this.wallHitSound = this.sound.add('wall_hit');
+    this.scoreSound = this.sound.add('score');
     const img = this.add.image(0, 0, 'background').setOrigin(0, 0);
     this.status.create();
     this.score0.create();
@@ -35,7 +41,14 @@ class MainScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.enterState('idle');
     this.input.keyboard.on('keydown', this.handleKey, this);
+    this.ball.onPaddleHit = () => {
+      this.paddleHitSound.play();
+    };
+    this.ball.onWallHit = () => {
+      this.wallHitSound.play();
+    };
     this.ball.onScored = n => {
+      this.scoreSound.play();
       const score = n == 0 ? this.score0 : this.score1;
       score.score += 1;
       if (score.score == this.opts.wins) {
@@ -73,6 +86,9 @@ class MainScene extends Phaser.Scene {
     );
     this.createSolidSprite('paddle', 15, 60, '#ffffff');
     this.createSolidSprite('ball', 12, 12, '#ffffff');
+    this.load.audio('paddle_hit', paddle_hit_wav);
+    this.load.audio('wall_hit', wall_hit_wav);
+    this.load.audio('score', score_wav);
   }
 
   enterState(newState, aux) {
